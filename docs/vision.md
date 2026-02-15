@@ -2,50 +2,46 @@
 
 ## Purpose
 
-This project exists to define **meaning before implementation**.
+This project exists to **centralize EVA token information** for frequent buyers and analysts, with an initial focus on real-time conversion and pricing.
 
-Its primary goal is to clarify:
+Its primary goal is to:
 
-- Why this project should exist
-- What problem space it belongs to
-- What values guide decisions
-- What should remain invariant, even as tools change
-
-Technology choices are considered secondary and provisional.
+- Reduce context switching across multiple sources
+- Provide a universal conversion panel (BTC <-> Satoshi <-> USD <-> BRL <-> EVA)
+- Show EVA price in real time (USD and BRL)
+- Expand into essential on-chain metrics in later phases
 
 ---
 
 ## Core Principles
 
-- **Clarity over speed**  
-  Understanding the problem is more valuable than implementing a solution quickly.
+- **Clarity first**
+  The interface and documentation should never compete with the core information.
 
-- **Intentionality over convenience**  
-  Every decision should be explainable in terms of purpose, not habit.
+- **Simplicity by design**
+  Fewer steps, fewer tabs, fewer distractions.
 
-- **Simplicity over accumulation**  
-  What is left out is as important as what is included.
+- **Consistency over novelty**
+  Predictable behavior builds trust in the data.
 
-- **Thinking before building**  
-  This project prioritizes reasoning, structure, and coherence.
+- **Intentional scope**
+  Deliver essential conversion and pricing before expanding into deeper metrics.
 
 ---
 
 ## What This Project Is
 
-- A space to define ideas
-- A shared reference for collaborators
-- A foundation for future implementations
-- A living explanation of intent
+- A single dashboard for EVA conversion and pricing
+- A hub for essential EVA on-chain metrics (phased)
+- A documentation-first source of truth for the project intent
 
 ---
 
 ## What This Project Is Not
 
-- A finished product
-- A technology showcase
-- A framework-dependent solution
-- A collection of premature answers
+- A full tokenomics suite today (advanced metrics are future phases)
+- A general crypto portfolio tracker
+- A multi-token analytics platform
 
 ---
 
@@ -53,6 +49,7 @@ Technology choices are considered secondary and provisional.
 
 This project is successful if:
 
-- New contributors understand the intent without verbal explanation
-- Decisions feel consistent over time
-- Implementation choices feel obvious when the time comes
+- A frequent EVA buyer can get pricing and conversions without opening multiple sources
+- Data updates reliably in near real time
+- The MVP delivers the conversion panel and price panels as defined
+- Documentation makes decisions and priorities obvious to contributors
