@@ -13,6 +13,19 @@ Its primary goal is to:
 
 ---
 
+## 🎯 Problem Being Solved
+
+The user currently needs to:
+
+1. Open Arbiscan manually
+2. Do conversion calculations across currencies
+3. Check multiple sources to understand token metrics
+4. Repeat this process every time they want to analyze the token
+
+**Solution:** Centralize everything in a single dashboard with real-time updates.
+
+---
+
 ## Core Principles
 
 - **Clarity first**
