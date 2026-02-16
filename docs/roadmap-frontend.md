@@ -1,248 +1,35 @@
-# 🎨 Roadmap Frontend - EVA Tokenomics Dashboard
+# 🎨 Frontend Roadmap - EVA Tokenomics Dashboard
 
-Este guia te leva passo a passo pela implementação da interface do usuário e experiência visual do projeto.
-
----
-
-## 📚 Índice
-
-1. [Setup do Layout](#1-setup-do-layout)
-2. [Sistema de Design](#2-sistema-de-design)
-3. [Componentes Base (UI)](#3-componentes-base-ui)
-4. [Componentes de Negócio](#4-componentes-de-negócio)
-5. [Páginas](#5-páginas)
-6. [Estados de Loading e Erro](#6-estados-de-loading-e-erro)
-7. [Responsividade](#7-responsividade)
-8. [Otimizações](#8-otimizações)
+This guide walks you step by step through implementing the user interface and visual experience of the project.
 
 ---
 
-## 1️⃣ Setup do Layout
+## 📚 Table of Contents
 
-### **1.1 Configurar Tailwind CSS**
-
-O Tailwind já foi instalado no setup inicial. Vamos customizar:
-
-```typescript
-// tailwind.config.ts
-
-import type { Config } from "tailwindcss";
-
-const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        // Cores do projeto (customize conforme preferência)
-        primary: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
-        },
-        success: {
-          light: "#10b981",
-          DEFAULT: "#059669",
-          dark: "#047857",
-        },
-        danger: {
-          light: "#ef4444",
-          DEFAULT: "#dc2626",
-          dark: "#b91c1c",
-        },
-        warning: {
-          light: "#f59e0b",
-          DEFAULT: "#d97706",
-          dark: "#b45309",
-        },
-      },
-      fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-roboto-mono)", "monospace"],
-      },
-      animation: {
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "spin-slow": "spin 3s linear infinite",
-      },
-    },
-  },
-  plugins: [],
-};
-
-export default config;
-```
-
-### **1.2 Configurar Fontes**
-
-```typescript
-// src/app/layout.tsx
-
-import { Inter, Roboto_Mono } from 'next/font/google'
-import './globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const robotoMono = Roboto_Mono({
-  subsets: ['latin'],
-  variable: '--font-roboto-mono',
-  display: 'swap',
-})
-
-export const metadata = {
-  title: 'EVA Tokenomics Dashboard',
-  description: 'Dashboard de análise on-chain para o token EVA (Ever Value Coin)',
-  icons: {
-    icon: '/favicon.ico',
-  },
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="pt-BR" className={`${inter.variable} ${robotoMono.variable}`}>
-      <body className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-        {children}
-      </body>
-    </html>
-  )
-}
-```
-
-### **1.3 Estilos Globais**
-
-```css
-/* src/app/globals.css */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  * {
-    @apply border-slate-700;
-  }
-
-  body {
-    @apply font-sans antialiased;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold;
-  }
-}
-
-@layer components {
-  /* Card padrão */
-  .card {
-    @apply bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-6 shadow-xl;
-  }
-
-  /* Card com hover */
-  .card-hover {
-    @apply card transition-all duration-300 hover:bg-slate-800/70 hover:border-slate-600 hover:shadow-2xl;
-  }
-
-  /* Input padrão */
-  .input {
-    @apply bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
-  }
-
-  /* Button padrão */
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900;
-  }
-
-  .btn-primary {
-    @apply btn bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 text-white;
-  }
-
-  .btn-secondary {
-    @apply btn bg-slate-700 hover:bg-slate-600 focus:ring-slate-500 text-white;
-  }
-
-  /* Badge */
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-
-  .badge-success {
-    @apply badge bg-success-light/10 text-success-light border border-success-light/20;
-  }
-
-  .badge-danger {
-    @apply badge bg-danger-light/10 text-danger-light border border-danger-light/20;
-  }
-}
-
-@layer utilities {
-  /* Gradientes personalizados */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent;
-  }
-
-  /* Animação de entrada */
-  .fade-in {
-    animation: fadeIn 0.5s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Scrollbar customizada */
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-slate-800;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-slate-600 rounded-full;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-slate-500;
-  }
-}
-```
+1. [Layout Setup](#1-layout-setup)
+2. [Design System](#2-design-system)
+3. [Base Components (UI)](#3-base-components-ui)
+4. [Business Components](#4-business-components)
+5. [Pages](#5-pages)
+6. [Loading and Error States](#6-loading-and-error-states)
+7. [Responsiveness](#7-responsiveness)
+8. [Optimizations](#8-optimizations)
 
 ---
 
-## 2️⃣ Sistema de Design
+## 1️⃣ Layout Setup
 
-### **2.1 Criar Types UI**
+### **1.1 Configure Tailwind CSS**
+
+### **1.2 Configure Fonts**
+
+### **1.3 Global Styles**
+
+---
+
+## 2️⃣ Design System
+
+### **2.1 Create UI Types**
 
 ```typescript
 // src/types/ui.ts
@@ -262,7 +49,7 @@ export interface BaseComponentProps {
 }
 ```
 
-### **2.2 Criar Ícones (usando Lucide React)**
+### **2.2 Create Icons (using Lucide React)**
 
 ```bash
 npm install lucide-react
@@ -292,7 +79,7 @@ export {
 
 ---
 
-## 3️⃣ Componentes Base (UI)
+## 3️⃣ Base Components (UI)
 
 ### **3.1 Card Component**
 
@@ -351,23 +138,6 @@ export function CardBody({ className, children }: CardBodyProps) {
 ```
 
 ### **3.2 Utility: cn (classnames)**
-
-```typescript
-// src/lib/utils/cn.ts
-
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-```
-
-Instalar dependências:
-
-```bash
-npm install clsx tailwind-merge
-```
 
 ### **3.3 Skeleton Loader**
 
@@ -525,7 +295,7 @@ export function Badge({ children, variant = 'primary', className }: BadgeProps) 
 
 ---
 
-## 4️⃣ Componentes de Negócio
+## 4️⃣ Business Components
 
 ### **4.1 Header**
 
@@ -1129,9 +899,9 @@ export function InvestmentCalculator({ price }: InvestmentCalculatorProps) {
 
 ---
 
-## 5️⃣ Páginas
+## 5️⃣ Pages
 
-### **5.1 Dashboard Principal**
+### **5.1 Main Dashboard**
 
 ```typescript
 // src/components/Dashboard/Dashboard.tsx
@@ -1243,7 +1013,7 @@ export function Dashboard() {
 }
 ```
 
-### **5.2 Página Principal (App Router)**
+### **5.2 Main Page (App Router)**
 
 ```typescript
 // src/app/page.tsx
@@ -1261,11 +1031,11 @@ export default function Home() {
 
 ---
 
-## 6️⃣ Estados de Loading e Erro
+## 6️⃣ Loading and Error States
 
 ### **6.1 Loading States Strategy**
 
-Cada seção carrega independentemente:
+Each section loads independently:
 
 ```typescript
 // Exemplo de componente com loading granular
@@ -1278,7 +1048,7 @@ Cada seção carrega independentemente:
 )}
 ```
 
-### **6.2 Error Boundaries (Opcional)**
+### **6.2 Error Boundaries (Optional)**
 
 ```typescript
 // src/components/ErrorBoundary.tsx
@@ -1323,7 +1093,7 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 ```
 
-Usar no layout:
+Use in the layout:
 
 ```typescript
 // src/app/layout.tsx
@@ -1344,9 +1114,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
-## 7️⃣ Responsividade
+## 7️⃣ Responsiveness
 
-### **7.1 Grid Responsivo**
+### **7.1 Responsive Grid**
 
 ```typescript
 // Breakpoints usados
@@ -1357,13 +1127,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 </div>
 ```
 
-### **7.2 Testar Responsividade**
+### **7.2 Test Responsiveness**
 
 ```bash
-# Rodar dev server
+# Run dev server
 npm run dev
 
-# Testar em:
+# Test on:
 # - Mobile (375px)
 # - Tablet (768px)
 # - Desktop (1280px)
@@ -1371,9 +1141,9 @@ npm run dev
 
 ---
 
-## 8️⃣ Otimizações
+## 8️⃣ Optimizations
 
-### **8.1 Lazy Loading de Componentes**
+### **8.1 Component Lazy Loading**
 
 ```typescript
 // src/app/page.tsx
@@ -1385,7 +1155,7 @@ const InvestmentCalculator = dynamic(
 );
 ```
 
-### **8.2 Memoização**
+### **8.2 Memoization**
 
 ```typescript
 // Usar React.memo em componentes pesados
@@ -1394,7 +1164,7 @@ export const PriceCard = React.memo(PriceCardComponent);
 
 ### **8.3 Image Optimization**
 
-Se adicionar imagens:
+If you add images:
 
 ```typescript
 import Image from 'next/image'
@@ -1410,7 +1180,7 @@ import Image from 'next/image'
 
 ---
 
-## ✅ Checklist Frontend
+## ✅ Frontend Checklist
 
 - [ ] Layout global configurado
 - [ ] Tailwind customizado com tema
@@ -1428,9 +1198,9 @@ import Image from 'next/image'
 
 ---
 
-## 🎯 Próximos Passos
+## 🎯 Next Steps
 
-### **Deploy na Vercel**
+### **Deploy on Vercel**
 
 ```bash
 # 1. Commit tudo
@@ -1446,22 +1216,22 @@ git push origin main
 # - Deploy!
 ```
 
-### **Melhorias Futuras (V2)**
+### **Future Improvements (V2)**
 
 - [ ] Dark/Light mode toggle
-- [ ] Gráfico de histórico de preço (Chart.js ou Recharts)
-- [ ] Notificações de preço (Web Push)
-- [ ] PWA (funcionar offline)
-- [ ] Exportar dados (CSV/PDF)
-- [ ] Comparação com outros tokens
-- [ ] Sistema de favoritos
+- [ ] Price history chart (Chart.js or Recharts)
+- [ ] Price notifications (Web Push)
+- [ ] PWA (works offline)
+- [ ] Export data (CSV/PDF)
+- [ ] Compare with other tokens
+- [ ] Favorites system
 
 ---
 
-**🎉 Parabéns! Seu dashboard está completo!**
+**🎉 Congrats! Your dashboard is complete!**
 
-Documentação relacionada:
+Related documentation:
 
-- [ROADMAP_BACKEND.md](./ROADMAP_BACKEND.md)
-- [ARCHITECTURE.md](./ARCHITECTURE.md)
-- [API_INTEGRATION.md](./API_INTEGRATION.md)
+- [ROADMAP_BACKEND.md](./roadmap-backend.md)
+- [ARCHITECTURE.md](./architecture-new.md)
+- [API_INTEGRATION.md](./api-integration.md)

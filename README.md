@@ -1,34 +1,65 @@
-# base-template
+# EVA Station
 
-This template is focused mainly on documentation and project patterns, could be reused before define a stack.
+On-chain analysis dashboard for the **EVA (Ever Value Coin)** token on Arbitrum.
 
-## First of all! Check `config-files/` folder
+## 🎯 Goal
 
-The `config-files` folder only will work if you move them to root folder. They are grouped into a folder just to facilitate your initial orientation on this template (to avoid the risk of mixing files with same name when running a CLI command for example)
+Centralize EVA token metrics and calculations in a single dashboard, removing the need to consult multiple sources and do manual calculations.
 
-The template-files folder must die when you finished your environment preparation.
+## 🛠️ Tech Stack
 
-# To understand the project
+- **Frontend:** Next.js 14 (App Router) + React 18
+- **Styling:** Tailwind CSS
+- **Blockchain:** Ethers.js / Viem
+- **APIs:**
+  - Arbitrum RPC (on-chain data)
+  - CoinGecko (prices)
+  - AwesomeAPI (BRL exchange rate)
+  - Arbiscan API (holders and transactions)
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![React](https://img.shields.io/badge/React-18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8)
+
+## 📊 EVA Contract
+
+- **Address:** `0x45D9831d8751B2325f3DBf48db748723726e1C8c`
+- **Network:** Arbitrum One
+- **Explorer:** [Arbiscan](https://arbiscan.io/token/0x45D9831d8751B2325f3DBf48db748723726e1C8c)
+
+# 🪚 Workflow (To work in)
+
+Focus on: `docs/dev-workflow.md` to how to work
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions are welcome.
+
+## 📚 Documentation (To understand the project)
 
 Read `docs/` files.
 
-## docs folder
+- [AI Context](./docs/ai-context.md)
+- [Architecture](./docs/architecture.md)
+- [API Integration](./docs/api-integration.md)
+- [Features](./docs/features.md)
 
-The `docs/` folder explains the project's vision, architecture, conventions, and processes. Prefer concise pages that explain _why_ as well as _how_, and update documentation alongside code changes to keep it accurate and useful.
+- [Backend Roadmap](./docs/ROADMAP_BACKEND.md)
+- [Frontend Roadmap](./docs/ROADMAP_FRONTEND.md)
+- [AI Context](./docs/AI_CONTEXT.md)
 
-- Project purpose and scope (vision, goals, and audience).
-- Architecture and domain concepts (high-level, stack-agnostic descriptions).
-- Contributor and development guides (workflow, branching, PR requirements, code style).
-- Decision records and RFCs (design trade-offs and rationale).
-- UX/UI principles, API contracts, example usage, and how-to guides.
-
-# To work in
-
-Focus on: `docs/dev-workflow.md` to understand the dev workflow
-
-## .github folder
+## 🐈‍⬛ .github folder
 
 The `.github` folder stores GitHub-specific configuration and workflow files that help standardize repository collaboration and automation. Common contents include:
 
 - `ISSUE_TEMPLATE/` and `pull_request_template.md` to guide contributors when opening issues or PRs.
 - `copilot-instructions.md` to give context to copilot agent.
+
+## 📝 License
+
+MIT
+
+---
+
+**Built by [@jemluz](https://github.com/jemluz)**

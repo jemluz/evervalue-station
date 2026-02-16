@@ -1,36 +1,58 @@
-# Copilot Instructions – Project Template
+# Copilot Instructions – EVA Station
 
-## Purpose of This Repository
+## Overview
 
-This repository is a **template for documentation and project standards**, intended to be used **before defining a technology stack**.
+This repository exists to **centralize information for EVA token holders**, with an initial focus on real-time conversion and pricing.
 
-Its goal is to:
+**Goal:**
 
-- Clarify vision, principles, and intent
-- Define architectural thinking independent of tools
-- Establish writing, structure, and collaboration standards
-- Serve as a shared cognitive baseline for humans and AI agents
+- Provide a universal conversion panel: BTC <-> Satoshi <-> USD <-> BRL <-> EVA
+- Show EVA price in real time (USD and BRL)
+- Convert EVA to Satoshis and BTC in real time
+- Reduce context switching for frequent EVA buyers/holders
 
-All technical choices are intentionally deferred.
+**User:** Anyone who is a frequent EVA buyer and analyst
 
----
+**Out of scope for now:** Tokenomics (planned for a future phase)
 
-## Architecture Overview (Agnostic)
+## 🎯 Problem Being Solved
 
-This project is structured around **conceptual layers**, not implementation details.
+The user currently needs to:
 
-### Conceptual Layers
+1. Open Arbiscan manually
+2. Do conversion calculations across currencies
+3. Check multiple sources to understand token metrics
+4. Repeat this process every time they want to analyze the token
 
-- **Vision & Intent**  
-  Why the project exists, what problem it addresses, and what values guide decisions.
-- **Domain & Content**  
-  Core concepts, rules, language, and mental models that are independent of technology.
-- **Structure & Flow**  
-  How information, features, or experiences are organized and related.
-- **Interaction (Optional / Future)**  
-  Any form of user, system, or collaborator interaction, if applicable.
+**Solution:** Centralize everything in a single dashboard with real-time updates.
 
-These layers should remain valid regardless of framework, language, or platform.
+## 🔧 Technical Stack
+
+```json
+{
+  "framework": "Next.js 14",
+  "router": "App Router",
+  "language": "TypeScript",
+  "styling": "Tailwind CSS",
+  "blockchain": "Ethers.js ou Viem",
+  "deployment": "Vercel",
+  "apis": ["Arbitrum RPC", "CoinGecko API", "AwesomeAPI (BRL)", "Arbiscan API"]
+}
+```
+
+## 📊 EVA Token Information
+
+```typescript
+const EVA_TOKEN = {
+  name: "Ever Value Coin",
+  symbol: "EVA",
+  address: "0x45D9831d8751B2325f3DBf48db748723726e1C8c",
+  network: "Arbitrum One",
+  chainId: 42161,
+  decimals: 18, // Verify via contract
+  type: "ERC-20",
+};
+```
 
 ---
 
@@ -38,103 +60,42 @@ These layers should remain valid regardless of framework, language, or platform.
 
 This repository prioritizes **documentation-first design**.
 
-- `docs/`  
+- `docs/`
   Contains markdown files describing:
-
   - Vision
-  - Architecture (conceptual, not technical)
-  - UI / UX principles
+  - Architecture
   - Writing and naming conventions
-  - Decision records (if applicable)
 
-- `.github/`  
+- `.github/`
   Defines collaboration standards:
-
   - Copilot / agent instructions
   - Issue templates
   - Pull request templates
   - Contribution guidelines
 
-- Root configuration files  
+- Root configuration files
   General formatting and hygiene rules (editor, ignores), intentionally minimal and stack-agnostic.
 
 No source code structure is assumed.
 
 ---
 
-## Developer & Contributor Workflow (Conceptual)
+## Decision Tree (Docs)
 
-- Read documentation **before** proposing solutions
-- Treat documentation as a **first-class artifact**
-- Prefer clarifying intent over implementing features
-- Update documentation when assumptions change
-- Avoid premature technical decisions
+```mermaid
+flowchart TD
+  A[Start here] --> B{What are you changing?}
+  B -->|Vision or scope| C[docs/vision.md]
+  B -->|Architecture or concepts| D[docs/architecture.md]
+  B -->|Integrations or APIs| E[docs/api-integration.md]
+  B -->|Workflow or contribution| F[docs/dev-workflow.md]
+  B -->|Roadmap or priorities| G[docs/roadmap-frontend.md and docs/roadmap-backend.md]
+```
 
-This repository may later be extended with:
+Quick links by decision level:
 
-- A chosen stack
-- Build or execution scripts
-- Runtime configuration
-
-Until then, all contributions should remain tool-independent.
-
----
-
-## Conventions and Patterns
-
-### Documentation
-
-- Use clear, concise language
-- Prefer simple sentences and explicit reasoning
-- Avoid unnecessary jargon
-- Explain _why_ before _how_
-
-### Naming
-
-- Names should reflect meaning, not implementation
-- Favor conceptual clarity over technical precision
-- Be consistent across documents
-
-### Tone
-
-- Clear and direct
-- Reflective and intentional
-- Accessible to both technical and non-technical readers
-- Avoid intimidation or excessive formalism
-
----
-
-## UI / Experience Principles (Abstract)
-
-When applicable, interfaces or experiences should favor:
-
-- Clarity over cleverness
-- Simplicity over density
-- Reading and understanding over decoration
-- Purposeful constraints
-
-Specific visual systems or libraries should be defined later, in context.
-
----
-
-## Integration Points (Deferred)
-
-- No frameworks, languages, or platforms are assumed
-- No external services or APIs are defined
-- No runtime behavior is specified
-
-All integration decisions are intentionally postponed until:
-
-- The problem space is well understood
-- The documentation is stable
-- The conceptual architecture is validated
-
----
-
-## Source of Truth
-
-- `README.md` → High-level overview
-- `docs/` → Vision, principles, architecture, guidelines
-- `.github/` → Collaboration and contribution standards
-
-If documentation and implementation ever diverge, **documentation takes precedence**.
+- Vision and scope: [docs/vision.md](docs/vision.md)
+- Architecture and concepts: [docs/architecture.md](docs/architecture.md)
+- Integrations and APIs: [docs/api-integration.md](docs/api-integration.md)
+- Workflow and contribution: [docs/dev-workflow.md](docs/dev-workflow.md)
+- Roadmap and priorities: [docs/roadmap-frontend.md](docs/roadmap-frontend.md) and [docs/roadmap-backend.md](docs/roadmap-backend.md)

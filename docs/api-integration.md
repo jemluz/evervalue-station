@@ -1,53 +1,53 @@
-# 🔌 Integração de APIs - EVA Tokenomics Dashboard
+# 🔌 API Integration - EVA Tokenomics Dashboard
 
-Este documento detalha todas as APIs usadas no projeto, como obter acesso, limites e exemplos de uso.
+This document details all APIs used in the project, how to get access, limits, and usage examples.
 
-## 📋 Resumo das APIs
+## 📋 API Summary
 
-| API              | Propósito      | Rate Limit (Free) | Autenticação |
-| ---------------- | -------------- | ----------------- | ------------ |
-| **Arbitrum RPC** | Dados on-chain | Ilimitado\*       | Não          |
-| **CoinGecko**    | Preços crypto  | 10-50 req/min     | Opcional     |
-| **AwesomeAPI**   | Cotação BRL    | Ilimitado         | Não          |
-| **Arbiscan**     | Holders, txs   | 5 req/seg         | API Key      |
+| API              | Purpose       | Rate Limit (Free) | Auth     |
+| ---------------- | ------------- | ----------------- | -------- |
+| **Arbitrum RPC** | On-chain data | Unlimited\*       | No       |
+| **CoinGecko**    | Crypto prices | 10-50 req/min     | Optional |
+| **AwesomeAPI**   | BRL exchange  | Unlimited         | No       |
+| **Arbiscan**     | Holders, txs  | 5 req/sec         | API Key  |
 
-\*Depende do provider (público pode ter throttling)
+\*Depends on the provider (public RPC can throttle)
 
 ---
 
 ## 1️⃣ Arbitrum RPC
 
-### **O que é?**
+### **What is it?**
 
-Endpoint para comunicação direta com a blockchain Arbitrum. Permite ler dados de contratos inteligentes.
+Endpoint for direct communication with the Arbitrum blockchain. Allows reading smart contract data.
 
-### **Endpoints Disponíveis**
+### **Available Endpoints**
 
-#### **Opção 1: RPC Público (Grátis, pode ser lento)**
+#### **Option 1: Public RPC (Free, can be slow)**
 
 ```
 https://arb1.arbitrum.io/rpc
 ```
 
-#### **Opção 2: Alchemy (Recomendado)**
+#### **Option 2: Alchemy (Recommended)**
 
 ```
 https://arb-mainnet.g.alchemy.com/v2/YOUR_API_KEY
 ```
 
 - **Sign up:** https://www.alchemy.com/
-- **Free tier:** 300M compute units/mês
+- **Free tier:** 300M compute units/month
 
-#### **Opção 3: Infura**
+#### **Option 3: Infura**
 
 ```
 https://arbitrum-mainnet.infura.io/v3/YOUR_API_KEY
 ```
 
 - **Sign up:** https://infura.io/
-- **Free tier:** 100k requests/dia
+- **Free tier:** 100k requests/day
 
-### **Como Usar no Projeto**
+### **How to Use in the Project**
 
 ```typescript
 // src/lib/blockchain/provider.ts
@@ -60,7 +60,18 @@ export function getProvider() {
 }
 ```
 
-### **Métodos do Contrato EVA**
+### Data that comes from the contract
+
+```typescript
+interface ContractData {
+  totalSupply: bigint;
+  decimals: number;
+  name: string;
+  symbol: string;
+}
+```
+
+### **EVA Contract Methods**
 
 ```typescript
 // src/lib/blockchain/evaContract.ts
@@ -69,7 +80,7 @@ import { getProvider } from "./provider";
 
 const EVA_ADDRESS = "0x45D9831d8751B2325f3DBf48db748723726e1C8c";
 
-// ABI mínimo necessário (ERC-20 padrão)
+// Minimal ABI needed (ERC-20 standard)
 const EVA_ABI = [
   "function totalSupply() view returns (uint256)",
   "function decimals() view returns (uint8)",
@@ -93,11 +104,11 @@ export async function getDecimals(): Promise<number> {
 }
 ```
 
-### **Exemplo de Resposta**
+### **Example Response**
 
 ```typescript
 await getTotalSupply();
-// "1000000000.0" (1 bilhão de tokens)
+// "1000000000.0" (1 billion tokens)
 
 await getDecimals();
 // 18
@@ -107,15 +118,15 @@ await getDecimals();
 
 ## 2️⃣ CoinGecko API
 
-### **O que é?**
+### **What is it?**
 
-API de dados de mercado crypto (preços, volume, market cap).
+Crypto market data API (prices, volume, market cap).
 
 ### **Endpoints**
 
 **Base URL:** `https://api.coingecko.com/api/v3`
 
-#### **Preço do EVA**
+#### **EVA Price**
 
 ```
 GET /simple/token_price/{platform}
@@ -123,7 +134,7 @@ GET /simple/token_price/{platform}
     &vs_currencies={currencies}
 ```
 
-#### **Preço do Bitcoin**
+#### **Bitcoin Price**
 
 ```
 GET /simple/price
@@ -133,14 +144,27 @@ GET /simple/price
 
 ### **Rate Limits**
 
-| Tier           | Requests  | Custo    |
-| -------------- | --------- | -------- |
-| Demo (sem key) | 10-50/min | Grátis   |
-| Analyst        | 500/min   | $129/mês |
+| Tier          | Requests  | Cost    |
+| ------------- | --------- | ------- |
+| Demo (no key) | 10-50/min | Free    |
+| Analyst       | 500/min   | $129/mo |
 
-Para este projeto, o **free tier é suficiente**.
+For this project, the **free tier is enough**.
 
-### **Como Usar no Projeto**
+### Data model
+
+```typescript
+// Price and market data
+interface CoinGeckoResponse {
+  market_data: {
+    current_price: { usd: number };
+    market_cap: { usd: number };
+    total_volume: { usd: number };
+  };
+}
+```
+
+### **How to Use in the Project**
 
 ```typescript
 // src/lib/api/coingecko.ts
@@ -150,7 +174,7 @@ const EVA_ADDRESS = "0x45D9831d8751B2325f3DBf48db748723726e1C8c";
 
 export const coingecko = {
   /**
-   * Busca preço do EVA em USD
+   * Fetches EVA price in USD
    */
   async getEVAPrice(): Promise<number> {
     const url =
@@ -165,7 +189,7 @@ export const coingecko = {
   },
 
   /**
-   * Busca preço do Bitcoin em USD
+   * Fetches Bitcoin price in USD
    */
   async getBTCPrice(): Promise<number> {
     const url = `${BASE_URL}/simple/price?ids=bitcoin&vs_currencies=usd`;
@@ -178,7 +202,7 @@ export const coingecko = {
   },
 
   /**
-   * Busca market data completo do EVA
+   * Fetches full EVA market data
    */
   async getMarketData() {
     const url = `${BASE_URL}/coins/arbitrum-one/contract/${EVA_ADDRESS}`;
@@ -196,7 +220,7 @@ export const coingecko = {
 };
 ```
 
-### **Exemplo de Resposta**
+### **Example Response**
 
 ```json
 // GET /simple/token_price/arbitrum-one?contract_addresses=0x45...&vs_currencies=usd
@@ -207,7 +231,7 @@ export const coingecko = {
 }
 ```
 
-### **Tratamento de Erros**
+### **Error Handling**
 
 ```typescript
 async function fetchWithRetry(fn: () => Promise<any>, retries = 3) {
@@ -221,17 +245,17 @@ async function fetchWithRetry(fn: () => Promise<any>, retries = 3) {
   }
 }
 
-// Uso
+// Usage
 const price = await fetchWithRetry(() => coingecko.getEVAPrice());
 ```
 
 ---
 
-## 3️⃣ AwesomeAPI (Cotação BRL)
+## 3️⃣ AwesomeAPI (BRL Exchange Rate)
 
-### **O que é?**
+### **What is it?**
 
-API brasileira gratuita para cotações de moedas.
+Free Brazilian API for currency exchange rates.
 
 ### **Endpoint**
 
@@ -239,7 +263,18 @@ API brasileira gratuita para cotações de moedas.
 GET https://economia.awesomeapi.com.br/json/last/USD-BRL,BTC-BRL
 ```
 
-### **Como Usar no Projeto**
+### Data model
+
+```typescript
+interface ExchangeRate {
+  USD: {
+    bid: string; // Buy price
+    ask: string; // Sell price
+  };
+}
+```
+
+### **How to Use in the Project**
 
 ```typescript
 // src/lib/api/exchange.ts
@@ -248,7 +283,7 @@ const BASE_URL = "https://economia.awesomeapi.com.br/json/last";
 
 export const exchange = {
   /**
-   * Busca cotação USD → BRL
+   * Fetches USD -> BRL rate
    */
   async getBRLRate(): Promise<number> {
     const response = await fetch(`${BASE_URL}/USD-BRL`);
@@ -259,7 +294,7 @@ export const exchange = {
   },
 
   /**
-   * Busca preço do BTC em BRL (alternativa ao CoinGecko)
+   * Fetches BTC price in BRL (alternative to CoinGecko)
    */
   async getBTCinBRL(): Promise<number> {
     const response = await fetch(`${BASE_URL}/BTC-BRL`);
@@ -271,53 +306,53 @@ export const exchange = {
 };
 ```
 
-### **Exemplo de Resposta**
+### **Example Response**
 
 ```json
 {
   "USDBRL": {
     "code": "USD",
     "codein": "BRL",
-    "name": "Dólar Americano/Real Brasileiro",
+    "name": "US Dollar/BRL",
     "high": "5.1234",
     "low": "5.0987",
     "varBid": "0.0123",
     "pctChange": "0.24",
-    "bid": "5.1150", // ← Preço de COMPRA (usar este)
-    "ask": "5.1200", // Preço de VENDA
+    "bid": "5.1150", // <- Buy price (use this)
+    "ask": "5.1200", // Sell price
     "timestamp": "1708012345",
     "create_date": "2026-02-14 10:30:00"
   }
 }
 ```
 
-### **Sem Rate Limit!**
+### **No Rate Limit**
 
-Esta API não tem limite de requisições documentado. Mas use bom senso (não faça 1000 req/seg).
+This API does not document a request limit. Use common sense (do not do 1000 req/sec).
 
 ---
 
 ## 4️⃣ Arbiscan API
 
-### **O que é?**
+### **What is it?**
 
-API oficial do explorer Arbiscan. Fornece dados de transações, holders, etc.
+Official Arbiscan explorer API. Provides transactions, holders, and more.
 
-### **Como Obter API Key**
+### **How to Get an API Key**
 
-1. Acesse https://arbiscan.io/
-2. Crie uma conta (grátis)
-3. Vá em **Account → API Keys**
-4. Clique em **Add** e copie sua key
+1. Visit https://arbiscan.io/
+2. Create an account (free)
+3. Go to **Account -> API Keys**
+4. Click **Add** and copy your key
 
 ### **Rate Limit**
 
-- **Free:** 5 requests/segundo
-- **Suficiente** para este projeto
+- **Free:** 5 requests/second
+- **Enough** for this project
 
-### **Endpoints Úteis**
+### **Useful Endpoints**
 
-#### **Número de Holders**
+#### **Holder Count**
 
 ```
 GET https://api.arbiscan.io/api
@@ -339,7 +374,16 @@ GET https://api.arbiscan.io/api
     &apikey={YOUR_API_KEY}
 ```
 
-### **Como Usar no Projeto**
+### Data model
+
+```typescript
+// Holder count
+interface ArbiscanTokenInfo {
+  result: string; // holder count as a string
+}
+```
+
+### **How to Use in the Project**
 
 ```typescript
 // src/lib/api/arbiscan.ts
@@ -350,8 +394,8 @@ const EVA_ADDRESS = "0x45D9831d8751B2325f3DBf48db748723726e1C8c";
 
 export const arbiscan = {
   /**
-   * Busca número de holders
-   * Nota: API retorna lista, mas total vem no metadata
+   * Fetches holder count
+   * Note: API returns a list, but total comes in metadata
    */
   async getHolderCount(): Promise<number> {
     const url =
@@ -364,12 +408,12 @@ export const arbiscan = {
     const data = await response.json();
     if (data.status !== "1") throw new Error(data.message);
 
-    // Arbiscan retorna total no resultado
+    // Arbiscan returns the total in the result
     return parseInt(data.result[0]?.totalHolders || "0");
   },
 
   /**
-   * Busca transações recentes (para análise de atividade)
+   * Fetches recent transactions (for activity analysis)
    */
   async getRecentTransactions(page = 1, limit = 10) {
     const url =
@@ -388,7 +432,7 @@ export const arbiscan = {
 };
 ```
 
-### **Exemplo de Resposta (Holders)**
+### **Example Response (Holders)**
 
 ```json
 {
@@ -398,13 +442,13 @@ export const arbiscan = {
     {
       "TokenHolderAddress": "0xabc...",
       "TokenHolderQuantity": "1000000000000000000000",
-      "totalHolders": "1234" // ← Total de holders
+      "totalHolders": "1234" // <- Total holders
     }
   ]
 }
 ```
 
-### **Tratamento de Rate Limit**
+### **Rate Limit Handling**
 
 ```typescript
 // src/lib/utils/rateLimiter.ts
@@ -412,7 +456,7 @@ export const arbiscan = {
 class RateLimiter {
   private queue: Array<() => Promise<any>> = [];
   private processing = false;
-  private interval = 200; // 5 req/seg = 200ms entre requests
+  private interval = 200; // 5 req/sec = 200ms between requests
 
   async add<T>(fn: () => Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -444,15 +488,15 @@ class RateLimiter {
 
 export const arbiscanLimiter = new RateLimiter();
 
-// Uso
+// Usage
 const holders = await arbiscanLimiter.add(() => arbiscan.getHolderCount());
 ```
 
 ---
 
-## 🔄 Orquestração de Múltiplas APIs
+## 🔄 Multi-API Orchestration
 
-### **Fetching Paralelo**
+### **Parallel Fetching**
 
 ```typescript
 // src/hooks/useEVAPrice.ts
@@ -464,14 +508,14 @@ export function useEVAPrice() {
   useEffect(() => {
     async function fetchAllPrices() {
       try {
-        // Buscar tudo em paralelo
+        // Fetch everything in parallel
         const [evaUsd, btcUsd, brlRate] = await Promise.all([
           coingecko.getEVAPrice(),
           coingecko.getBTCPrice(),
           exchange.getBRLRate(),
         ]);
 
-        // Calcular conversões
+        // Calculate conversions
         const evaBrl = evaUsd * brlRate;
         const evaBtc = evaUsd / btcUsd;
         const evaSat = evaBtc * 100_000_000;
@@ -498,33 +542,33 @@ export function useEVAPrice() {
 
 ---
 
-## 📊 Resumo de Variáveis de Ambiente
+## 📊 Environment Variables Summary
 
 ```env
 # .env.local
 
-# Arbitrum RPC (obrigatório)
+# Arbitrum RPC (required)
 NEXT_PUBLIC_ARBITRUM_RPC_URL=https://arb1.arbitrum.io/rpc
 
-# Arbiscan API Key (obrigatório)
+# Arbiscan API Key (required)
 NEXT_PUBLIC_ARBISCAN_API_KEY=your_api_key_here
 
-# CoinGecko API Key (opcional, para rate limits maiores)
+# CoinGecko API Key (optional, for higher rate limits)
 COINGECKO_API_KEY=your_api_key_here
 ```
 
 ---
 
-## ✅ Checklist de Setup
+## ✅ Setup Checklist
 
-- [ ] Criar conta na Arbiscan e obter API key
-- [ ] Decidir RPC provider (público vs Alchemy/Infura)
-- [ ] Configurar `.env.local`
-- [ ] Testar cada API client individualmente
-- [ ] Implementar rate limiting para Arbiscan
-- [ ] Adicionar error handling em todos os fetchers
-- [ ] Implementar sistema de cache (opcional)
+- [ ] Create an Arbiscan account and get an API key
+- [ ] Decide on an RPC provider (public vs Alchemy/Infura)
+- [ ] Configure `.env.local`
+- [ ] Test each API client individually
+- [ ] Implement rate limiting for Arbiscan
+- [ ] Add error handling to all fetchers
+- [ ] Implement a cache system (optional)
 
 ---
 
-**Próximo passo:** [ROADMAP_BACKEND.md](./ROADMAP_BACKEND.md)
+**Next step:** [ROADMAP_BACKEND.md](./ROADMAP_BACKEND.md)

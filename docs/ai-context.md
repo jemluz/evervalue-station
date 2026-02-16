@@ -1,292 +1,108 @@
-# 🤖 AI Context - EVA Tokenomics Dashboard
-
-Este documento fornece contexto completo para agentes de IA auxiliarem no desenvolvimento do projeto.
-
-## 📋 Visão Geral do Projeto
-
-**Nome:** EVA Tokenomics Dashboard
-**Tipo:** Web Application (DApp Analytics)
-**Objetivo:** Dashboard centralizado para análise on-chain do token EVA (Ever Value Coin)
-**Usuário:** Investidor retail que compra EVA frequentemente na rede Arbitrum
-
-## 🎯 Problema que Resolve
-
-O usuário atualmente precisa:
-
-1. Acessar Arbiscan manualmente
-2. Fazer cálculos de conversão entre moedas
-3. Consultar múltiplas fontes para entender métricas do token
-4. Repetir esse processo toda vez que quer analisar o token
-
-**Solução:** Centralizar tudo em um único dashboard com atualizações em tempo real.
-
-## 🔧 Stack Técnica
-
-```json
-{
-  "framework": "Next.js 14",
-  "router": "App Router",
-  "language": "TypeScript",
-  "styling": "Tailwind CSS",
-  "blockchain": "Ethers.js ou Viem",
-  "deployment": "Vercel",
-  "apis": ["Arbitrum RPC", "CoinGecko API", "AwesomeAPI (BRL)", "Arbiscan API"]
-}
-```
-
-## 📊 Informações do Token EVA
-
-```typescript
-const EVA_TOKEN = {
-  name: "Ever Value Coin",
-  symbol: "EVA",
-  address: "0x45D9831d8751B2325f3DBf48db748723726e1C8c",
-  network: "Arbitrum One",
-  chainId: 42161,
-  decimals: 18, // Verificar via contrato
-  type: "ERC-20",
-};
-```
-
-## 🎨 Funcionalidades (Prioridade)
-
-### **P0 - Essenciais (MVP)**
-
-1. **Conversor Universal**
-   - Input: qualquer moeda (BTC, USD, BRL, EVA, Satoshi)
-   - Output: conversão para todas as outras
-   - Atualização em tempo real
-
-2. **Painel de Preço**
-   - Preço EVA em USD
-   - Preço EVA em BRL
-   - Valor em Satoshis
-   - Valor em BTC
-
-### **P1 - Extras (V1)**
-
-3. **Métricas de Supply**
-   - Total Supply
-   - Tokens Queimados
-   - Circulating Supply
-4. **Holder Metrics**
-   - Número total de holders
-   - Growth rate (opcional)
-
-### **P2 - Futuro (V2)**
-
-5. **Market Data**
-   - Market Cap
-   - Volume 24h
-   - Liquidez
-6. **Calculadora de Investimento**
-   - "Investir R$ X → recebo Y EVA"
-   - "Se EVA chegar a $X, meu investimento vale Y"
-
-## 🏗️ Arquitetura de Componentes
-
-```
-Dashboard (página principal)
-├── Header (logo, título, preço atual)
-├── UniversalConverter (P0)
-│   └── CurrencyInput (multi-currency)
-├── PricePanel (P0)
-│   ├── PriceCard (USD)
-│   ├── PriceCard (BRL)
-│   ├── PriceCard (Satoshi)
-│   └── PriceCard (BTC)
-├── SupplyMetrics (P1)
-│   ├── MetricCard (Total Supply)
-│   ├── MetricCard (Burned)
-│   └── MetricCard (Circulating)
-├── HolderMetrics (P1)
-│   └── MetricCard (Total Holders)
-└── InvestmentCalculator (P2)
-    ├── InputCalculator
-    └── SimulatorCalculator
-```
-
-## 🔌 Integrações de API
-
-### **1. Arbitrum RPC (Blockchain)**
-
-```typescript
-// Dados que vêm do contrato
-interface ContractData {
-  totalSupply: bigint;
-  decimals: number;
-  name: string;
-  symbol: string;
-}
-```
-
-### **2. CoinGecko API**
-
-```typescript
-// Preço e market data
-interface CoinGeckoResponse {
-  market_data: {
-    current_price: { usd: number };
-    market_cap: { usd: number };
-    total_volume: { usd: number };
-  };
-}
-```
-
-### **3. AwesomeAPI (Cotação BRL)**
-
-```typescript
-interface ExchangeRate {
-  USD: {
-    bid: string; // Preço de compra
-    ask: string; // Preço de venda
-  };
-}
-```
-
-### **4. Arbiscan API**
-
-```typescript
-// Número de holders
-interface ArbiscanTokenInfo {
-  result: string; // número de holders em string
-}
-```
-
-## 📁 Estrutura de Dados (State Management)
-
-```typescript
-// Global state (pode usar Context API ou Zustand)
-interface AppState {
-  evaPrice: {
-    usd: number;
-    brl: number;
-    btc: number;
-    satoshi: number;
-  };
-  tokenMetrics: {
-    totalSupply: number;
-    burned: number;
-    circulating: number;
-    holders: number;
-  };
-  marketData: {
-    marketCap: number;
-    volume24h: number;
-    liquidity: number;
-  };
-  loading: boolean;
-  lastUpdate: Date;
-}
-```
-
-## 🎓 Nível de Conhecimento do Desenvolvedor
+## 🎓 Developer Knowledge Level
 
 **Frontend:**
 
-- ✅ React (experiente)
-- ✅ Next.js (experiente)
-- ✅ TypeScript (confortável)
+- ✅ React (experienced)
+- ✅ Next.js (experienced)
+- ✅ TypeScript (experienced)
 
 **Backend/APIs:**
 
-- ⚠️ Básico (precisa de orientação)
-- ⚠️ Primeira experiência com Web3/Blockchain
+- ⚠️ Basic (needs guidance)
+- ⚠️ First experience with Web3/Blockchain
 
-**Necessidades:**
+**Needs:**
 
-- Passo a passo detalhado para integrações
-- Explicações sobre conceitos Web3
-- Boas práticas de organização de código backend
+- Step-by-step integration guidance
+- Explanations of Web3 concepts
+- Backend code organization best practices
 
-## 🚦 Roadmap de Implementação
+## 🚦 Implementation Roadmap
 
-### **Fase 1: Documentação** ✅
+### **Phase 1: Documentation** ✅
 
-- Criar todos os arquivos .md
-- Definir arquitetura
-- Mapear integrações
+- Create all .md files
+- Define architecture
+- Map integrations
 
-### **Fase 2: Backend (APIs e Blockchain)**
+### **Phase 2: Backend (APIs and Blockchain)**
 
-1. Setup do projeto Next.js
-2. Configurar providers (Ethers/Viem)
-3. Criar client do contrato EVA
-4. Implementar fetchers de API
-5. Criar hooks de dados
-6. Testar todas as integrações
+1. Set up the Next.js project
+2. Configure providers (Ethers/Viem)
+3. Create the EVA contract client
+4. Implement API fetchers
+5. Create data hooks
+6. Test all integrations
 
-### **Fase 3: Frontend (UI/UX)**
+### **Phase 3: Frontend (UI/UX)**
 
-1. Setup Tailwind
-2. Criar layout base
-3. Implementar componentes P0
-4. Implementar componentes P1
-5. Adicionar loading states
-6. Polish e responsividade
+1. Set up Tailwind
+2. Create base layout
+3. Implement P0 components
+4. Implement P1 components
+5. Add loading states
+6. Polish and responsiveness
 
-### **Fase 4: Deploy**
+### **Phase 4: Deploy**
 
-1. Configurar variáveis de ambiente na Vercel
+1. Configure environment variables on Vercel
 2. Deploy
-3. Testar em produção
+3. Test in production
 
-## 💡 Dicas para AI Agents
+## 💡 Tips for AI Agents
 
-### **Ao sugerir código:**
+### **When suggesting code:**
 
-- Sempre use TypeScript
-- Prefira hooks customizados para lógica reutilizável
-- Use Tailwind para estilos
-- Adicione tratamento de erros
-- Inclua loading states
-- Comente código complexo
+- Always use TypeScript
+- Prefer custom hooks for reusable logic
+- Use Tailwind for styles
+- Add error handling
+- Include loading states
+- Comment complex code
 
-### **Ao ajudar com Web3:**
+### **When helping with Web3:**
 
-- Explique conceitos antes de mostrar código
-- Use exemplos práticos
-- Referencie documentação oficial
-- Mostre alternativas (Ethers vs Viem)
+- Explain concepts before showing code
+- Use practical examples
+- Reference official documentation
+- Show alternatives (Ethers vs Viem)
 
-### **Ao estruturar código:**
+### **When structuring code:**
 
-- Separe concerns (UI vs lógica)
-- Um arquivo = uma responsabilidade
-- Tipos TypeScript em arquivo separado
-- Constantes em arquivos dedicados
+- Separate concerns (UI vs logic)
+- One file = one responsibility
+- Keep TypeScript types in a separate file
+- Keep constants in dedicated files
 
-## 🔗 Links Úteis
+## 🔗 Useful Links
 
-- **Contrato EVA:** https://arbiscan.io/token/0x45D9831d8751B2325f3DBf48db748723726e1C8c
+- **EVA Contract:** https://arbiscan.io/token/0x45D9831d8751B2325f3DBf48db748723726e1C8c
 - **Arbitrum RPC:** https://docs.arbitrum.io/build-decentralized-apps/reference/node-providers
 - **CoinGecko API:** https://www.coingecko.com/en/api/documentation
 - **Arbiscan API:** https://docs.arbiscan.io/
 - **AwesomeAPI:** https://docs.awesomeapi.com.br/
 
-## 📞 Quando o Desenvolvedor Precisa de Ajuda
+## 📞 When the Developer Needs Help
 
 **Backend/APIs:**
 
-- Como estruturar fetchers
-- Como lidar com rate limits
-- Como cachear dados
-- Como tratar erros de rede
+- How to structure fetchers
+- How to handle rate limits
+- How to cache data
+- How to handle network errors
 
 **Web3:**
 
-- Como conectar com blockchain
-- Como ler dados de contrato
-- Como formatar BigInt
-- Como calcular valores com decimais
+- How to connect to the blockchain
+- How to read contract data
+- How to format BigInt
+- How to calculate values with decimals
 
-**Arquitetura:**
+**Architecture:**
 
-- Onde colocar cada lógica
-- Como organizar state
-- Quando usar Server vs Client Components
-- Como otimizar performance
+- Where to place logic
+- How to organize state
+- When to use Server vs Client Components
+- How to optimize performance
 
 ---
-
-**Última atualização:** 2026-02-14

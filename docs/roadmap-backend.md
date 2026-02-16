@@ -1,13 +1,13 @@
-# 🛠️ Roadmap Backend - EVA Tokenomics Dashboard
+# 🛠️ Backend Roadmap - EVA Tokenomics Dashboard
 
-Este guia te leva passo a passo pela implementação da camada de dados e integrações do projeto.
+This guide walks you step by step through implementing the data layer and integrations for the project.
 
 ---
 
-## 📚 Índice
+## 📚 Table of Contents
 
-1. [Setup Inicial](#1-setup-inicial)
-2. [Configuração de Ambiente](#2-configuração-de-ambiente)
+1. [Initial Setup](#1-initial-setup)
+2. [Environment Configuration](#2-environment-configuration)
 3. [Blockchain Integration](#3-blockchain-integration)
 4. [API Clients](#4-api-clients)
 5. [Custom Hooks](#5-custom-hooks)
@@ -16,15 +16,15 @@ Este guia te leva passo a passo pela implementação da camada de dados e integr
 
 ---
 
-## 1️⃣ Setup Inicial
+## 1️⃣ Initial Setup
 
-### **1.1 Criar Projeto Next.js**
+### **1.1 Create Next.js Project**
 
 ```bash
 npx create-next-app@latest eva-tokenomics-dashboard
 ```
 
-**Opções recomendadas:**
+**Recommended options:**
 
 ```
 ✔ Would you like to use TypeScript? Yes
@@ -35,7 +35,7 @@ npx create-next-app@latest eva-tokenomics-dashboard
 ✔ Would you like to customize the default import alias? No
 ```
 
-### **1.2 Instalar Dependências**
+### **1.2 Install Dependencies**
 
 ```bash
 cd eva-tokenomics-dashboard
@@ -43,18 +43,18 @@ cd eva-tokenomics-dashboard
 # Blockchain
 npm install ethers@6
 
-# Alternativa moderna (escolha uma):
+# Modern alternative (choose one):
 # npm install viem
 
-# Utilidades
-npm install swr  # Para data fetching com cache
-npm install date-fns  # Para formatação de datas
+# Utilities
+npm install swr  # For data fetching with cache
+npm install date-fns  # For date formatting
 
 # Dev dependencies
 npm install -D @types/node
 ```
 
-### **1.3 Estrutura de Pastas**
+### **1.3 Folder Structure**
 
 ```bash
 mkdir -p src/{lib,hooks,types,config}
@@ -65,9 +65,9 @@ mkdir -p docs
 
 ---
 
-## 2️⃣ Configuração de Ambiente
+## 2️⃣ Environment Configuration
 
-### **2.1 Criar arquivo `.env.local`**
+### **2.1 Create `.env.local` file**
 
 ```bash
 touch .env.local
@@ -86,13 +86,13 @@ NEXT_PUBLIC_ARBISCAN_API_KEY=your_api_key_here
 COINGECKO_API_KEY=
 ```
 
-### **2.2 Criar `.env.local.example`**
+### **2.2 Create `.env.local.example`**
 
 ```bash
 cp .env.local .env.local.example
 ```
 
-Edite `.env.local.example` e substitua as keys por placeholders:
+Edit `.env.local.example` and replace the keys with placeholders:
 
 ```env
 # .env.local.example
@@ -102,7 +102,7 @@ NEXT_PUBLIC_ARBISCAN_API_KEY=your_api_key_here
 COINGECKO_API_KEY=your_api_key_here_optional
 ```
 
-### **2.3 Criar validação de env vars**
+### **2.3 Add env var validation**
 
 ```typescript
 // src/config/env.ts
@@ -123,7 +123,7 @@ if (!env.arbiscanKey) {
 }
 ```
 
-### **2.4 Criar constantes globais**
+### **2.4 Create global constants**
 
 ```typescript
 // src/config/constants.ts
@@ -161,7 +161,7 @@ export const COINGECKO_IDS = {
 
 ## 3️⃣ Blockchain Integration
 
-### **3.1 Criar Provider**
+### **3.1 Create Provider**
 
 ```typescript
 // src/lib/blockchain/provider.ts
@@ -198,7 +198,7 @@ export async function testConnection(): Promise<boolean> {
 }
 ```
 
-### **3.2 Criar ABIs**
+### **3.2 Create ABIs**
 
 ```typescript
 // src/lib/blockchain/abis.ts
@@ -228,7 +228,7 @@ export const EVA_CUSTOM_ABI = [
 export const EVA_ABI = [...ERC20_ABI, ...EVA_CUSTOM_ABI];
 ```
 
-### **3.3 Criar Contract Client**
+### **3.3 Create Contract Client**
 
 ```typescript
 // src/lib/blockchain/evaContract.ts
@@ -347,9 +347,9 @@ export async function getCirculatingSupply(): Promise<string> {
 }
 ```
 
-### **3.4 Testar Blockchain Integration**
+### **3.4 Test Blockchain Integration**
 
-Crie um arquivo temporário para testar:
+Create a temporary file to test:
 
 ```typescript
 // test-blockchain.ts (na raiz do projeto)
@@ -377,7 +377,7 @@ async function test() {
 test();
 ```
 
-Execute:
+Run:
 
 ```bash
 npx tsx test-blockchain.ts
@@ -533,7 +533,7 @@ export const coingecko = {
 };
 ```
 
-### **4.2 AwesomeAPI Client (Cotação BRL)**
+### **4.2 AwesomeAPI Client (BRL Exchange Rate)**
 
 ```typescript
 // src/lib/api/exchange.ts
@@ -772,7 +772,7 @@ export const arbiscan = {
 };
 ```
 
-### **4.4 Testar API Clients**
+### **4.4 Test API Clients**
 
 ```typescript
 // test-apis.ts (na raiz)
@@ -815,7 +815,7 @@ async function testAPIs() {
 testAPIs();
 ```
 
-Execute:
+Run:
 
 ```bash
 npx tsx test-apis.ts
@@ -1370,7 +1370,7 @@ export const cache = new SimpleCache();
 
 ## 7️⃣ Testing
 
-### **7.1 Teste Completo de Integração**
+### **7.1 Full Integration Test**
 
 ```typescript
 // test-complete.ts
@@ -1395,37 +1395,37 @@ testComplete();
 
 ---
 
-## ✅ Checklist Backend
+## ✅ Backend Checklist
 
 Antes de ir para o Frontend, certifique-se que:
 
-- [ ] Projeto Next.js criado
-- [ ] Dependências instaladas
-- [ ] `.env.local` configurado
-- [ ] Blockchain provider funcionando
-- [ ] Contrato EVA sendo lido corretamente
-- [ ] Todos os API clients testados
-- [ ] Hooks customizados criados
-- [ ] Utilidades de formatação prontas
-- [ ] Testes manuais rodando sem erros
+- [ ] Next.js project created
+- [ ] Dependencies installed
+- [ ] `.env.local` configured
+- [ ] Blockchain provider working
+- [ ] EVA contract reads working
+- [ ] All API clients tested
+- [ ] Custom hooks created
+- [ ] Formatting utilities ready
+- [ ] Manual tests running without errors
 
 ---
 
-## 🎯 Próximos Passos
+## 🎯 Next Steps
 
-Agora que o backend está pronto, você tem:
+Now that the backend is ready, you have:
 
-✅ **Acesso a dados da blockchain** (total supply, decimals, etc)  
-✅ **Preços em tempo real** (EVA, BTC, cotação BRL)  
-✅ **Métricas do token** (supply, burned, holders)  
-✅ **Hooks prontos para usar** nos componentes React
+✅ **Access to blockchain data** (total supply, decimals, etc)
+✅ **Real-time prices** (EVA, BTC, BRL exchange rate)
+✅ **Token metrics** (supply, burned, holders)
+✅ **Hooks ready to use** in React components
 
-**Próximo documento:** [ROADMAP_FRONTEND.md](./ROADMAP_FRONTEND.md)
+**Next document:** [ROADMAP_FRONTEND.md](./ROADMAP_FRONTEND.md)
 
 ---
 
-**Dúvidas?** Consulte:
+**Questions?** See:
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Entender a arquitetura
-- [API_INTEGRATION.md](./API_INTEGRATION.md) - Detalhes das APIs
-- [AI_CONTEXT.md](./AI_CONTEXT.md) - Contexto completo do projeto
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Understand the architecture
+- [API_INTEGRATION.md](./API_INTEGRATION.md) - API details
+- [AI_CONTEXT.md](./AI_CONTEXT.md) - Full project context

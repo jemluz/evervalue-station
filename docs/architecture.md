@@ -1,83 +1,124 @@
 # Architecture
 
-## Architectural Philosophy
+## Overview
 
-This architecture is **conceptual, not technical**.
+This project follows a layered architecture to separate UI, business logic, and data access for the EVA dashboard.
 
-It describes how ideas relate to each other, not how they are implemented in code.
-The goal is to remain valid across different stacks, platforms, and tools.
-
----
-
-## Conceptual Layers
-
-### 1. Intent & Vision
-
-Defines:
-
-- Purpose
-- Constraints
-- Non-goals
-- Values
-
-This layer changes rarely and guides all others.
+The goal is to keep data sources isolated, reuse conversion logic, and keep UI components focused on presentation.
 
 ---
 
-### 2. Domain & Concepts
+## Layers
 
-Defines:
+1. **UI Layer (React Components)**
+   - Presents data: converter, price panels, metrics, market data.
 
-- Core concepts
-- Vocabulary
-- Rules and mental models
-- What the system is _about_
+2. **Business Logic Layer (Hooks + Utils)**
+   - Fetching, conversion calculations, formatting, and local state orchestration.
 
-This layer is independent of interfaces or technologies.
+3. **Data Access Layer (API Clients + Blockchain)**
+   - API clients for CoinGecko, AwesomeAPI, Arbiscan.
+   - Blockchain reads via Arbitrum RPC.
 
----
+4. **External Services**
+   - Arbitrum RPC, CoinGecko, AwesomeAPI, Arbiscan.
 
-### 3. Structure & Flow
-
-Defines:
-
-- How information or features are organized
-- Relationships between concepts
-- User or system journeys
-
-This layer answers _how things connect_, not _how they are built_.
-
----
-
-### 4. Interaction (Optional)
-
-Defines:
-
-- Points of interaction (human or system)
-- Feedback loops
-- Inputs and outputs
-
-This layer may evolve or remain minimal.
-
----
-
-## Invariants
-
-The following should remain stable even if implementation changes:
-
-- Meaning of core concepts
-- Vocabulary
-- Structural relationships
-- Design principles
+```
+┌─────────────────────────────────────────────────┐
+│                   UI Layer                       │
+│            (React Components)                    │
+└───────────────────┬─────────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────────┐
+│              Business Logic Layer                │
+│           (Custom Hooks + Utils)                 │
+└───────────────────┬─────────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────────┐
+│              Data Access Layer                   │
+│         (API Clients + Blockchain)               │
+└───────────────────┬─────────────────────────────┘
+                    │
+┌───────────────────▼─────────────────────────────┐
+│              External Services                   │
+│    (Arbitrum, CoinGecko, Arbiscan, etc)         │
+└─────────────────────────────────────────────────┘
+```
 
 ---
 
-## Decision-Making Rule
+## Directory Structure Overview
 
-If a decision:
+```
+src/
+├── app/                       # Next.js App Router
+├── components/                # React components (Dashboard, Converter, etc)
+├── hooks/                     # Data hooks (useEVAPrice, useTokenMetrics, etc)
+├── lib/
+│   ├── api/                    # API clients (coingecko, exchange, arbiscan)
+│   ├── blockchain/             # Provider + contract helpers
+│   └── utils/                  # Formatters, calculations, cache
+├── types/                      # Shared TypeScript types
+└── config/                     # Constants and env validation
+```
 
-- Cannot be explained at the conceptual level
-- Depends heavily on a specific tool
-- Solves a problem that is not yet understood
+More details in (reference `folder-structure.md`)
 
-It should be postponed.
+---
+
+## Data Flow
+
+### 1) Initial load
+
+```
+User opens /
+	-> Dashboard mounts
+	-> Hooks fetch in parallel:
+		 - useEVAPrice: CoinGecko + AwesomeAPI
+		 - useTokenMetrics: Arbitrum RPC + Arbiscan
+		 - useMarketData: CoinGecko
+	-> State updates
+	-> UI renders
+```
+
+### 2) Periodic refresh
+
+- Price: every 30s
+- Metrics: every 60s
+- Holders: every 5 min
+
+Use polling or SWR-style revalidation with caching to reduce API load.
+
+```typescript
+// Hooks use polling or SWR for auto-refresh
+useEVAPrice({
+  refreshInterval: 30000, // 30 seconds
+  revalidateOnFocus: true,
+});
+```
+
+### 3) Converter interaction
+
+```
+User edits one currency
+  -> onChange runs
+	-> useConverter() recalculates all values
+	-> Local state updates
+	-> All inputs sync instantly
+```
+
+---
+
+## Design Patterns
+
+- **Custom Hooks** for data fetching, state management and refresh logic.
+- **Client Pattern** to isolate external API calls.
+- **Container/Presentational or Smart/Dumb components** for clearer UI responsibilities. Components to show data, hooks to manage it.
+
+---
+
+## Constraints and Invariants
+
+- Data sources remain isolated behind clients.
+- Conversion logic remains centralized and reusable.
+- UI components do not perform direct network calls.
