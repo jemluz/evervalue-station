@@ -1,6 +1,6 @@
 name: General Issue
 description: Feature, enhancement or general suggestion for the project
-title: "[TURMA-<ISSUE_NUMBER>] Title resuming the issue"
+title: "[EVAST-<ISSUE_NUMBER>] Title resuming the issue"
 labels: [enhancement, feature, frontend, backend, devops, documentation]
 
 body:
