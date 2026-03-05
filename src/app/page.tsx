@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { example } from "@/lib/utils/example";
 
+
 example();
 
 export default function Home() {
