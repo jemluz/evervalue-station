@@ -1,4 +1,10 @@
+// Backend types (API/domain contract) ----------------------------------------------
+export interface HealthData {
+  status: "ok";
+  checkedAt: string;
+}
 
+// Frontend types (UI and hook state) ------------------------------------------------
 export type HealthCheckStatus = "ok" | "fail" | "not-in-use" | "loading";
 
 export interface HealthCheckItem {
@@ -13,9 +19,9 @@ export interface StatusUiConfig {
   displayText: string;
 }
 
-export interface HealthData {
-  status: "ok";
-  checkedAt: string;
+export interface HealthCheckListItemProps {
+  label: string;
+  statusUi: StatusUiConfig;
 }
 
 export interface UseHealthCheckResult {

@@ -1,39 +1,10 @@
 "use client";
 
 import { ethers } from "ethers";
+import { HealthCheckListItem } from "@/components/health/HealthCheckListItem";
 import { useHealthCheck } from "@/hooks/useHealthCheck";
-import type {
-  HealthCheckItem,
-  HealthCheckStatus,
-  StatusUiConfig,
-} from "@/types/health";
-
-const STATUS_UI: Record<HealthCheckStatus, StatusUiConfig> = {
-  ok: {
-    toneClassName: "text-green-600 dark:text-green-400",
-    icon: "✓",
-    srLabel: "status ok",
-    displayText: "ok",
-  },
-  fail: {
-    toneClassName: "text-red-600 dark:text-red-400",
-    icon: "✗",
-    srLabel: "status fail",
-    displayText: "fail",
-  },
-  "not-in-use": {
-    toneClassName: "text-gray-500 dark:text-gray-400",
-    icon: "-",
-    srLabel: "status not in use",
-    displayText: "not in use",
-  },
-  loading: {
-    toneClassName: "text-yellow-500",
-    icon: "…",
-    srLabel: "status loading",
-    displayText: "loading...",
-  },
-};
+import type { HealthCheckItem, HealthCheckStatus } from "@/types/health";
+import { STATUS_UI } from "./constants";
 
 function getEthersStatus(): HealthCheckStatus {
   try {
@@ -65,19 +36,7 @@ export default function HealthPage() {
         {checks.map(({ label, status }) => {
           const statusUi = STATUS_UI[status];
 
-          return (
-            <li key={label} className="flex items-center gap-3 text-base">
-              <span
-                className={statusUi.toneClassName}
-                role="img"
-                aria-label={statusUi.srLabel}
-              >
-                {statusUi.icon}
-              </span>
-              <span>{label}</span>
-              <span className="text-gray-400">{statusUi.displayText}</span>
-            </li>
-          );
+          return <HealthCheckListItem key={label} label={label} statusUi={statusUi} />;
         })}
       </ul>
 
