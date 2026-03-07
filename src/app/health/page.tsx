@@ -1,10 +1,41 @@
 "use client";
 
 import { ethers } from "ethers";
-import { format } from "date-fns";
 import { useHealthCheck } from "@/hooks/useHealthCheck";
+import type {
+  HealthCheckItem,
+  HealthCheckStatus,
+  StatusUiConfig,
+} from "@/types/health";
 
-function getEthersStatus(): string {
+const STATUS_UI: Record<HealthCheckStatus, StatusUiConfig> = {
+  ok: {
+    toneClassName: "text-green-600 dark:text-green-400",
+    icon: "✓",
+    srLabel: "status ok",
+    displayText: "ok",
+  },
+  fail: {
+    toneClassName: "text-red-600 dark:text-red-400",
+    icon: "✗",
+    srLabel: "status fail",
+    displayText: "fail",
+  },
+  "not-in-use": {
+    toneClassName: "text-gray-500 dark:text-gray-400",
+    icon: "-",
+    srLabel: "status not in use",
+    displayText: "not in use",
+  },
+  loading: {
+    toneClassName: "text-yellow-500",
+    icon: "…",
+    srLabel: "status loading",
+    displayText: "loading...",
+  },
+};
+
+function getEthersStatus(): HealthCheckStatus {
   try {
     return ethers.version ? "ok" : "fail";
   } catch {
@@ -12,26 +43,15 @@ function getEthersStatus(): string {
   }
 }
 
-function getDateFnsStatus(): string {
-  try {
-    const result = format(new Date(), "yyyy-MM-dd");
-    return result ? "ok" : "fail";
-  } catch {
-    return "fail";
-  }
-}
-
 export default function HealthPage() {
-  const { data, isLoading, isError } = useHealthCheck();
+  const { data } = useHealthCheck();
 
   const ethersStatus = getEthersStatus();
-  const dateFnsStatus = getDateFnsStatus();
-  const swrStatus = isLoading ? "loading..." : isError ? "fail" : "ok";
+  const swrStatus: HealthCheckStatus = "not-in-use";
 
-  const checks = [
-    { label: "ethers ok?", value: ethersStatus },
-    { label: "swr ok?", value: swrStatus },
-    { label: "date-fns ok?", value: dateFnsStatus },
+  const checks: HealthCheckItem[] = [
+    { label: "ethers ok?", status: ethersStatus },
+    { label: "swr active?", status: swrStatus },
   ];
 
   return (
@@ -42,30 +62,28 @@ export default function HealthPage() {
       </p>
 
       <ul className="space-y-2">
-        {checks.map(({ label, value }) => (
-          <li key={label} className="flex items-center gap-3 text-base">
-            <span
-              className={
-                value === "ok"
-                  ? "text-green-600 dark:text-green-400"
-                  : value === "loading..."
-                    ? "text-yellow-500"
-                    : "text-red-600 dark:text-red-400"
-              }
-            >
-              {value === "ok" ? "✓" : value === "loading..." ? "…" : "✗"}
-            </span>
-            <span>{label}</span>
-            <span className="text-gray-400">{value}</span>
-          </li>
-        ))}
+        {checks.map(({ label, status }) => {
+          const statusUi = STATUS_UI[status];
+
+          return (
+            <li key={label} className="flex items-center gap-3 text-base">
+              <span
+                className={statusUi.toneClassName}
+                role="img"
+                aria-label={statusUi.srLabel}
+              >
+                {statusUi.icon}
+              </span>
+              <span>{label}</span>
+              <span className="text-gray-400">{statusUi.displayText}</span>
+            </li>
+          );
+        })}
       </ul>
 
-      {data && (
-        <p className="mt-8 text-xs text-gray-400">
-          SWR checked at: {data.checkedAt}
-        </p>
-      )}
+      <p className="mt-8 text-xs text-gray-400">
+        Local fallback checked at: <span suppressHydrationWarning>{data.checkedAt}</span>
+      </p>
     </div>
   );
 }
