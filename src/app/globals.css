@@ -165,6 +165,35 @@
       linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
   }
 
+  .conversor-fit-scale {
+    transform: scale(0.95);
+    transform-origin: center;
+  }
+
+  @media (min-width: 640px) {
+    .conversor-fit-scale {
+      transform: scale(0.97);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .conversor-fit-scale {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-height: 900px) {
+    .conversor-fit-scale {
+      transform: scale(0.93);
+    }
+  }
+
+  @media (max-height: 820px) {
+    .conversor-fit-scale {
+      transform: scale(0.9);
+    }
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
