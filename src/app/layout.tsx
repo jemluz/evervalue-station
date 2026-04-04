@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "@/app/globals.css";
+import { AnimatedGridBackground } from "@/components/common/AnimatedGridBackground";
 import { Header } from "@/components/common/Header";
 import { cn } from "@/lib/utils";
 
@@ -29,10 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", inter.variable)}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
       >
-        <Header />
-        {children}
+        <AnimatedGridBackground />
+        <div className="relative z-10">
+          <Header />
+          {children}
+        </div>
       </body>
     </html>
   );
