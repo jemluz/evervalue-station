@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 
 const CELL_SIZE = 50;
 const CELL_PADDING = 2;
+const INITIAL_CELL_COUNT = 1200;
 
 const ORANGE_TONES = ["rgba(255, 231, 213, 0.95)", "rgba(255, 209, 176, 0.9)"];
 const GRAY_TONES = [
@@ -23,7 +24,7 @@ function pseudoRandom(seed: number) {
 
 function getCellCount() {
   if (typeof window === "undefined") {
-    return 1200;
+    return INITIAL_CELL_COUNT;
   }
 
   const columns = Math.ceil(window.innerWidth / CELL_SIZE) + CELL_PADDING;
@@ -33,7 +34,7 @@ function getCellCount() {
 }
 
 export function AnimatedGridBackground() {
-  const [cellCount, setCellCount] = useState(getCellCount);
+  const [cellCount, setCellCount] = useState(INITIAL_CELL_COUNT);
 
   useEffect(() => {
     const updateCellCount = () => {
