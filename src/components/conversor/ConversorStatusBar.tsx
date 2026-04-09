@@ -4,6 +4,7 @@ import { useConversorContext } from "@/components/conversor/ConversorContext";
 
 export function ConversorStatusBar() {
   const { isLoading, lastUpdated, error } = useConversorContext();
+  const lastUpdatedLabel = lastUpdated?.toTimeString().split(" ")[0];
 
   return (
     <div className="mt-3 flex items-center justify-between rounded-[24px] border border-gray-100 bg-[#FAFAFA] px-4 py-3 text-xs font-medium text-gray-500">
@@ -15,7 +16,7 @@ export function ConversorStatusBar() {
         ) : (
           <>
             <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-            Atualizado {lastUpdated?.toTimeString().split(" ")[0]}
+            {lastUpdatedLabel ? `Atualizado ${lastUpdatedLabel}` : "Sincronizado"}
           </>
         )}
       </div>
