@@ -136,16 +136,17 @@
   }
 
   .eva-grid-cell {
+    --cell-animation: eva-grid-flicker-a;
     width: 50px;
     height: 50px;
     background-color: var(--cell-color);
     opacity: 0;
-    animation: eva-grid-flicker var(--cell-duration) ease-in-out infinite;
+    animation: var(--cell-animation) var(--cell-duration) ease-in-out infinite;
     animation-delay: var(--cell-delay);
     will-change: opacity;
   }
 
-  @keyframes eva-grid-flicker {
+  @keyframes eva-grid-flicker-a {
     0%,
     100% {
       opacity: 0;
@@ -155,6 +156,38 @@
     }
     65% {
       opacity: 0.06;
+    }
+  }
+
+  @keyframes eva-grid-flicker-b {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    22% {
+      opacity: 0.08;
+    }
+    48% {
+      opacity: var(--cell-opacity);
+    }
+    72% {
+      opacity: 0.04;
+    }
+  }
+
+  @keyframes eva-grid-flicker-c {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    28% {
+      opacity: var(--cell-opacity);
+    }
+    54% {
+      opacity: 0.02;
+    }
+    78% {
+      opacity: 0.09;
     }
   }
 
