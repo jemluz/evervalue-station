@@ -6,7 +6,7 @@ export type PaletteTone = {
 };
 
 // Grid density and viewport padding.
-export const CELL_SIZE = 50;
+export const CELL_SIZE = 32;
 export const CELL_PADDING = 2;
 export const INITIAL_CELL_COUNT = 1200;
 
