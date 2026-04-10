@@ -7,7 +7,7 @@ import { ConversorTitle } from "./ConversorTitle";
 
 function ConversorPageContent() {
   return (
-    <div className="flex min-h-[calc(100dvh-4rem)] w-full flex-col items-center justify-center bg-transparent">
+    <div className="flex w-full flex-col items-center justify-center bg-transparent">
       <div className="conversor-fit-scale w-full max-w-xl space-y-6 px-4">
         <ConversorTitle />
         <PriceReferences />

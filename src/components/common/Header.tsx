@@ -21,13 +21,15 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-lg shadow-black/5">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-[#ffba58]">
             <Hexagon className="w-5 h-5 text-black" fill="currentColor" />
           </div>
-          <span className="font-medium text-lg tracking-tight text-black">EVA Station</span>
+          <span className="font-medium text-lg tracking-tight text-black">
+            EVA Station
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -44,13 +46,6 @@ export function Header() {
             </Link>
           ))}
         </nav>
-
-        <Button
-          onClick={handleConnect}
-          className="rounded-full bg-black hover:bg-black/80 text-white px-6 font-medium"
-        >
-          Connect
-        </Button>
       </div>
     </header>
   );

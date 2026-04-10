@@ -7,7 +7,7 @@ export function PriceReferences() {
   const { rates } = useConversorContext();
 
   return (
-    <div className="flex justify-center gap-3 text-sm font-medium">
+    <div className="flex flex-col md:flex-row justify-center gap-3 text-sm font-medium">
       <CurrencyBadge
         val={rates.EVA_USD}
         icon={Hexagon}
