@@ -1,42 +1,14 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-
-const CELL_SIZE = 50;
-const CELL_PADDING = 2;
-const INITIAL_CELL_COUNT = 1200;
-
-const ORANGE_TONES = ["rgba(255, 231, 213, 0.95)", "rgba(255, 209, 176, 0.9)"];
-const GRAY_TONES = [
-  "rgba(247, 247, 247, 0.9)",
-  "rgba(242, 242, 242, 0.68)",
-  "rgba(237, 237, 237, 0.75)",
-  "rgba(232, 232, 232, 0.63)",
-  "rgba(228, 228, 228, 0.7)",
-];
-const WHITE_TONES = ["rgba(255, 255, 255, 0.9)"];
-const PALETTE = [...GRAY_TONES, ...GRAY_TONES, ...ORANGE_TONES, ...WHITE_TONES];
-
-function pseudoRandom(seed: number) {
-  const x = Math.sin(seed * 9999.91) * 10000;
-  return x - Math.floor(x);
-}
-
-function getCellCount() {
-  if (typeof window === "undefined") {
-    return INITIAL_CELL_COUNT;
-  }
-
-  const columns = Math.ceil(window.innerWidth / CELL_SIZE) + CELL_PADDING;
-  const rows = Math.ceil(window.innerHeight / CELL_SIZE) + CELL_PADDING;
-
-  return columns * rows;
-}
+import { INITIAL_CELL_COUNT } from "./animatedGrid.constants";
+import { getCellCount, getCellVisualProfile } from "./animatedGrid.utils";
 
 export function AnimatedGridBackground() {
   const [cellCount, setCellCount] = useState(INITIAL_CELL_COUNT);
 
   useEffect(() => {
+    // Keeps coverage accurate after viewport size changes.
     const updateCellCount = () => {
       setCellCount(getCellCount());
     };
@@ -50,13 +22,11 @@ export function AnimatedGridBackground() {
   }, []);
 
   return (
+    // Decorative-only layer: hidden from accessibility tree.
     <div className="eva-grid-bg" aria-hidden="true">
       {Array.from({ length: cellCount }, (_, index) => {
-        const color =
-          PALETTE[Math.floor(pseudoRandom(index + 1) * PALETTE.length)];
-        const opacity = 0.3 + pseudoRandom(index + 7) * 0.22;
-        const duration = 5 + pseudoRandom(index + 13) * 8;
-        const delay = -pseudoRandom(index + 31) * 12;
+        const { color, opacity, duration, delay, animationVariant } =
+          getCellVisualProfile(index);
 
         return (
           <span
@@ -68,6 +38,7 @@ export function AnimatedGridBackground() {
                 "--cell-opacity": opacity.toFixed(3),
                 "--cell-duration": `${duration.toFixed(3)}s`,
                 "--cell-delay": `${delay.toFixed(3)}s`,
+                "--cell-animation": animationVariant,
               } as CSSProperties
             }
           />

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Rates } from "@/types/conversor";
 
@@ -23,7 +23,11 @@ interface UseConversorRatesResult {
  */
 export function useConversorRates(): UseConversorRatesResult {
   const rates = useMemo(() => MOCK_RATES, []);
-  const lastUpdated = useMemo(() => new Date(), []);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setLastUpdated(new Date());
+  }, []);
 
   return {
     rates,
