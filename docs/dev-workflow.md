@@ -6,6 +6,13 @@ This document describes the development workflow for the project, including nami
 
 For details on how to set up the project, see [Project Setup](./project-setup.md).
 
+## 🧩 GitHub Templates
+
+Use the repository templates when opening issues and pull requests:
+
+- Pull Request template: [../.github/pull_request_template.md](../.github/pull_request_template.md)
+- Issue templates: [../.github/ISSUE_TEMPLATE/](../.github/ISSUE_TEMPLATE/)
+
 ## 🎨 Code Formatting
 
 - There is an `.editorconfig` file to set what is expected as code formatting standards
