@@ -228,3 +228,28 @@ Para a fase Execute, confirmar por tarefa quais ferramentas devo usar.
   - T2: built-in edit tools
   - T3: built-in edit tools
   - T4: built-in edit tools + lint em terminal
+
+---
+
+## Branch Map
+
+Branches derivadas das sub-issues vinculadas à issue #46 no GitHub.
+
+| Task | Sub-issue | Branch |
+| ---- | --------- | ------ |
+| T1 | #50 | `feat/EVAST-00046__SUB-50` |
+| T2 [P] | #52 | `feat/EVAST-00046__SUB-52` |
+| T3 [P] | #51 | `feat/EVAST-00046__SUB-51` |
+| T4 | #53 | `feat/EVAST-00046__SUB-53` |
+
+**Branch pai (issue principal):** `feat/EVAST-00046`
+
+**Fluxo de merge:**
+
+```text
+feat/EVAST-00046__SUB-50 → feat/EVAST-00046  (T1, squash PR)
+feat/EVAST-00046__SUB-52 → feat/EVAST-00046  (T2, squash PR)
+feat/EVAST-00046__SUB-51 → feat/EVAST-00046  (T3, squash PR)
+feat/EVAST-00046__SUB-53 → feat/EVAST-00046  (T4, squash PR)
+feat/EVAST-00046         → dev               (feature completa, squash PR)
+```
