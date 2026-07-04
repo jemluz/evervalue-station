@@ -4,15 +4,6 @@
 2. **Performance para Séries Temporais**: Se no futuro você quiser exibir gráficos de variação de preço, o Postgres lida muito bem com grandes volumes de dados temporais (especialmente com extensões como TimescaleDB).
 3. **Ecossistema Node.js**: A integração com ORMs como Prisma ou TypeORM é excelente.
 
----
-
-Esta URL solicita os dados de ambos os ativos e todas as conversões em uma única transação, otimizando o seu cronjob de 5 minutos:
-
-`https://api.coingecko.com/api/v3/simple/price?ids=evervalue-coin,bitcoin&vs_currencies=usd,brl,btc,sats`
-
----
-
-
 ### 🗄️ Tabela `Price`
 
 **Model**
@@ -35,6 +26,7 @@ Esta tabela armazena os valores de mercado. O uso de **Decimal** é mandatório 
 | **EVA** | 34.86    | 188.20    | 0.00053600 | 53600     | 2026-06-12T... |
 
 ---
+
 ### 🗄️ Tabela `Status`
 
 Esta tabela funciona com apenas um registro com ID fixo, representando o "pulso" atual da integração externa.
