@@ -1,9 +1,9 @@
-Embora o endpoint do EVA traga o preço em BTC, existem três motivos para você monitorar o Bitcoin de forma independente:
+Although EVA endpoint returns price in BTC, there are three reasons to monitor Bitcoin independently:
 
-- **Cálculo de SATS**: O Coingecko nem sempre retorna `sats` como uma `vs_currency` estável para todos os tokens. Ter o preço real do BTC/USD permite que seu Backend I calcule SATS de forma infalível:
-  - 1 BTC = 100.000.000 SATS
-  - Sendo assim, seu Backend I faz: `(Preço_EVA_em_BTC * 100.000.000)` para garantir o valor de SATS, sem depender de arredondamentos da API.
+- **SATS Calculation**: Coingecko does not always return `sats` as stable `vs_currency` for all tokens. Having real BTC/USD price allows Backend I to calculate SATS in fail-safe way:
+  - 1 BTC = 100,000,000 SATS
+  - So Backend I does: `(EVA_Price_in_BTC * 100,000,000)` to guarantee SATS value, without depending on API rounding.
 
-- **Fidelidade do Lastro**: O EVA tem um modelo de "BTC floor price" (preço mínimo em BTC que sobe diariamente). Monitorar o par BTC/BRL isoladamente permite que você valide se a valorização que está vendo no EVA é um ganho real perante o Bitcoin ou apenas uma flutuação do mercado de câmbio (BRL/USD).
+- **Backing Fidelity**: EVA has "BTC floor price" model (minimum BTC price that rises daily). Monitoring BTC/BRL pair in isolation lets you validate whether appreciation you see in EVA is real gain against Bitcoin or only exchange market fluctuation (BRL/USD).
 
-- **Redundância de Status**: Se o par EVA/BTC apresentar alguma anomalia de liquidez na exchange (o que pode acontecer com tokens menores), você ainda tem o preço global do Bitcoin para manter o sistema funcional para as outras conversões.
+- **Status Redundancy**: If EVA/BTC pair shows liquidity anomaly on exchange (which can happen with smaller tokens), you still have global Bitcoin price to keep system functional for other conversions.

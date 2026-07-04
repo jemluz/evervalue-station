@@ -1,67 +1,67 @@
 # Overview
 
-Eva Station será um site para consulta de preços (USD, BTC, BRL, SATS e EVA).
+Eva Station will be a website for price lookup (USD, BTC, BRL, SATS, and EVA).
 
-Esse site surgiu da necessidade de abrir multiplas abas no navegador para consulta de preços toda vez que eu ia comprar o token EVA (evervalue coin).
+This website came from the need to open multiple browser tabs to check prices every time I was going to buy the EVA token (evervalue coin).
 
-## Arquitetura geral
+## General architecture
 
-O EVA Station será composto por:
+EVA Station will be composed of:
 
-- 1 sistema frontend
-- 2 sistemas backend
-- 1 banco de dados
+- 1 frontend system
+- 2 backend systems
+- 1 database
 
-Esse sistemas dependem da API do coingecko para consulta de preços:
+These systems depend on the Coingecko API for price lookup:
 https://api.coingecko.com/api/v3
 
-O comportamento do sistema será:
+System behavior will be:
 
-- Usuário consulta Frontend
-- Frontend consulta Backend I
-- Backend I consulta banco de dados e responde ao Frontend
-- Database armazena preços e status da Coingecko API
-- Backend II consulta a Coingecko API e escreve no Database
+- User queries Frontend
+- Frontend queries Backend I
+- Backend I queries database and responds to Frontend
+- Backend II queries Coingecko API and writes to Database
+- Database stores prices and Coingecko API status
 
-No futuro o sistema vai buscar dados on-chain, e as consultas para API da Coingecko passarão a ser um fallback (quando não for possível estabelecer conexão on-chain).
+In the future, the system will fetch on-chain data, and Coingecko API queries will become a fallback (when it is not possible to establish an on-chain connection).
 
 ---
 
-### Comportamento
+### Behavior
 
 **Frontend**:
 
-- Deve exibir um formulário com os inputs: BTC, USD, EVA, BRL e SATS
-- Cada input deve refletir os preços atualizados
-- Ao modificar o valor em um dos inputs, os outros inputs devem ser atualizados com a conversão correspondente.
-  - Por exemplo: ao digitar R$ 100,00 no input BRL, os valores de USD, BTC, EVA e SATS devem ser o equivalente a R$ 100,00 convertidos para cada moeda.
+- Must display a form with inputs: BTC, USD, EVA, BRL, and SATS
+- Each input must reflect updated prices
+- When changing value in one input, other inputs must be updated with corresponding conversion.
+  - For example: when entering R$ 100.00 in BRL input, USD, BTC, EVA, and SATS values must be equivalent of R$ 100.00 converted to each currency.
 
 **Backend I:**
 
-- Deve fazer todos os cálculos de conversão (se necessário) e entregar a informação pronta para o Frontend.
-- Deve consultar o Database para ler/obter informações de preço.
-- Deve consultar o Database para ler/obter informações de status.
-
-**Database**:
-
-- Deve armazenar o valor dos preços (USD, BRL, SATS, EVA e BTC)
-- Deve armazenar o status da Coingecko API.
-- Pode fornecer informações (preços e status) para Backend I.
-- Pode ser alterado (preços e status) por Backend II.
+- Must perform all conversion calculations (if needed) and provide ready-to-use information to Frontend.
+- Must query Database to read/get price information.
+- Must query Database to read/get status information.
 
 **Backend II**:
 
-- Deve consultar a Coingecko API para obter os valores de preço atualizados.
-- Deve consultar a Coingecko API para obter o status da API atualizado.
-- Deve realizar as consultas de preço e status periodicamente (a cada 5 min) a fim de manter a fidelidade dos dados, como um cronjob.
-- Deve escrever no Database os dados (preços e status) atualizados.
+- Must query Coingecko API to get updated price values.
+- Must query Coingecko API to get updated API status.
+- Must perform price and status queries periodically (every 5 min) to keep data fidelity, as a cronjob.
+- Must write updated data (prices and status) to Database.
+
+**Database**:
+
+- Must store price values (USD, BRL, SATS, EVA, and BTC)
+- Must store Coingecko API status.
+- Can provide information (prices and status) to Backend I.
+- Can be updated (prices and status) by Backend II.
 
 **Coingecko API endpoints**:
 
-- Para consultar status: `https://api.coingecko.com/api/v3/ping`
-- Para consultar os preços: `https://api.coingecko.com/api/v3/simple/price?ids=evervalue-coin,bitcoin&vs_currencies=usd,brl,btc,sats`
+- To check status: `https://api.coingecko.com/api/v3/ping`
+- To check prices: `https://api.coingecko.com/api/v3/simple/price?ids=evervalue-coin,bitcoin&vs_currencies=usd,brl,btc,sats`
 
-- **Resultado**: Recebe um JSON com os dois objetos. Para o EVA, o Coingecko já faz a conversão interna para BTC, USD e BRL.
-- **Vantagem**: Uma única transação no cronjob de 5 min.
+- **Result**: Receives JSON with both objects. For EVA, Coingecko already performs internal conversion to BTC, USD, and BRL.
+- **Advantage**: Single transaction in 5-min cronjob.
 
 ---
