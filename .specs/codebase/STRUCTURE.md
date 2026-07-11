@@ -9,7 +9,6 @@
 ├── public/
 ├── src/
 ├── .github/
-├── .claude/
 ├── package.json
 ├── tsconfig.json
 ├── eslint.config.mjs
