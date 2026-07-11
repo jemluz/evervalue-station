@@ -27,13 +27,13 @@ export function ConversorField({ field, isLast }: ConversorFieldProps) {
     <div className="group relative">
       <div
         className={cn(
-          "rounded-[24px] border bg-[#FAFAFA] p-5 transition-all",
+          "rounded-[16px] border bg-[#FAFAFA] px-5 py-3 transition-all",
           isActive
             ? "relative z-20 border-gray-200 bg-white ring-1 ring-gray-200 shadow-sm"
             : "border-transparent hover:border-gray-200",
         )}
       >
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between items-center gap-4">
           <div className="flex-1">
             <Input
               type="text"
@@ -46,7 +46,7 @@ export function ConversorField({ field, isLast }: ConversorFieldProps) {
                 const raw = sanitizeDecimalInput(e.target.value);
                 if (raw !== null) onFieldChange(field.id, raw);
               }}
-              className="h-auto border-0 bg-transparent p-0 text-4xl font-semibold text-black shadow-none focus-visible:ring-0"
+              className="h-auto border-0 bg-transparent p-0 text-2xl font-semibold text-black shadow-none focus-visible:ring-0"
             />
             <div className="mt-1 text-sm text-gray-500">
               ≈ $
