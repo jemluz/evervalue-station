@@ -50,7 +50,7 @@
 
 ## Why monorepo ?
 
-- Single source of truth for shared types, schemas, and constants used by Web, Backend I, and Backend II.
+- Single source of truth for shared types, schemas, and constants used by Web, Backend I - Read, and Backend II - Cronjob.
 - Easier contract evolution: API and domain changes are versioned together in one PR.
 - Independent deploys with shared code: each app keeps its own runtime while reusing common packages.
 - Better long-term fit for planned on-chain expansion, avoiding duplicated logic across repositories.

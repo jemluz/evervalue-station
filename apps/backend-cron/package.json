@@ -1,0 +1,10 @@
+{
+  "name": "@evast/backend-cron",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Backend Cron scaffold only\"",
+    "build": "echo \"Backend Cron scaffold only\"",
+    "sync:prices": "echo \"sync-prices not implemented yet\""
+  }
+}

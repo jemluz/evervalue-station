@@ -31,8 +31,8 @@ This table stores market values. Using **Decimal** is mandatory to avoid roundin
 
 This table works with only one record with fixed ID, representing current "heartbeat" of external integration.
 
-- **Performance**: Backend I runs very simple query: `SELECT * FROM api_status WHERE id = 1`. Instant read (O(1)).
-- **Frontend Simplicity**: You do not need to handle arrays or date filters in frontend code to know if system is online. Just read single object returned by Backend I.
+- **Performance**: Backend I - Read runs very simple query: `SELECT * FROM api_status WHERE id = 1`. Instant read (O(1)).
+- **Frontend Simplicity**: You do not need to handle arrays or date filters in frontend code to know if system is online. Just read single object returned by Backend I - Read.
 - **Storage Efficiency**: If you saved one log every 5 minutes, in one year you would have more than 100,000 rows only for "pings". Since goal is only to show current status on website, one row is enough.
 
 **Model**

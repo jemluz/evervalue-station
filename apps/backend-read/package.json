@@ -1,0 +1,10 @@
+{
+  "name": "@evast/backend-read",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "echo \"Backend Read scaffold only\"",
+    "build": "echo \"Backend Read scaffold only\"",
+    "start": "echo \"Backend Read scaffold only\""
+  }
+}

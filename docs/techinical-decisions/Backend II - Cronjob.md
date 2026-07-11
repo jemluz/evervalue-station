@@ -1,4 +1,4 @@
-## Backend II - Decisions (Pilot)
+## Backend II - Cronjob - Decisions (Pilot)
 
 ### Stack
 
@@ -10,15 +10,15 @@
 
 ### Architecture
 
-- Backend II runs as dedicated worker for background synchronization.
-- Project stays in monorepo, with Backend II separated by responsibility from Backend I and Frontend.
+- Backend II - Cronjob runs as dedicated worker for background synchronization.
+- Project stays in monorepo, with Backend II - Cronjob separated by responsibility from Backend I - Read and Frontend.
 
 ### Schedule
 
 - Scheduler: GitHub Actions (`*/5 * * * *`).
-- GitHub Actions triggers Backend II synchronization job every 5 minutes.
+- GitHub Actions triggers Backend II - Cronjob synchronization job every 5 minutes.
 
-### Runtime flow (Backend II)
+### Runtime flow (Backend II - Cronjob)
 
 1. GitHub Actions runs every 5 minutes.
 2. Workflow executes `run-sync-prices.ts`.
@@ -47,7 +47,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter backend-ii sync:prices
+      - run: pnpm --filter backend-cron sync:prices
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           COINGECKO_BASE_URL: https://api.coingecko.com/api/v3
@@ -66,7 +66,7 @@ jobs:
 
 - Treat `bitcoin.sats = 100000000` as fixed reference.
 - Persist `evervalue-coin.sats` from Coingecko payload.
-- Keep writes consistent to support reliable conversions in Backend I.
+- Keep writes consistent to support reliable conversions in Backend I - Read.
 
 ### Future Evolution
 

@@ -18,9 +18,9 @@ https://api.coingecko.com/api/v3
 System behavior will be:
 
 - User queries Frontend
-- Frontend queries Backend I
-- Backend I queries database and responds to Frontend
-- Backend II queries Coingecko API and writes to Database
+- Frontend queries Backend I - Read
+- Backend I - Read queries database and responds to Frontend
+- Backend II - Cronjob queries Coingecko API and writes to Database
 - Database stores prices and Coingecko API status
 
 In the future, the system will fetch on-chain data, and Coingecko API queries will become a fallback (when it is not possible to establish an on-chain connection).
@@ -36,13 +36,13 @@ In the future, the system will fetch on-chain data, and Coingecko API queries wi
 - When changing value in one input, other inputs must be updated with corresponding conversion.
   - For example: when entering R$ 100.00 in BRL input, USD, BTC, EVA, and SATS values must be equivalent of R$ 100.00 converted to each currency.
 
-**Backend I:**
+**Backend I - Read:**
 
 - Must perform all conversion calculations (if needed) and provide ready-to-use information to Frontend.
 - Must query Database to read/get price information.
 - Must query Database to read/get status information.
 
-**Backend II**:
+**Backend II - Cronjob**:
 
 - Must query Coingecko API to get updated price values.
 - Must query Coingecko API to get updated API status.
@@ -53,8 +53,8 @@ In the future, the system will fetch on-chain data, and Coingecko API queries wi
 
 - Must store price values (USD, BRL, SATS, EVA, and BTC)
 - Must store Coingecko API status.
-- Can provide information (prices and status) to Backend I.
-- Can be updated (prices and status) by Backend II.
+- Can provide information (prices and status) to Backend I - Read.
+- Can be updated (prices and status) by Backend II - Cronjob.
 
 **Coingecko API endpoints**:
 
