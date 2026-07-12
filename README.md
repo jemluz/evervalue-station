@@ -4,24 +4,27 @@ On-chain analysis dashboard for the **EVA (Ever Value Coin)** token on Arbitrum.
 
 ## 🎯 Goal
 
-Centralize EVA token metrics and calculations in a single dashboard, reducing context switching and manual calculations.
+This project exists to **centralize EVA token information** for frequent buyers and analysts, with real-time conversion and pricing. Reducing context switching (multiple browser tabs) and manual calculations.
 
-## 📚 Start Here
+Its primary goal is to:
 
-- AI entry point: [.github/copilot-instructions.md](.github/copilot-instructions.md)
-- Quick product context: [docs/vision.md](docs/vision.md)
-- Feature scope: [docs/features.md](docs/features.md)
+- Reduce context switching across multiple sources
+- Provide a universal conversion panel (BTC <-> Satoshi <-> USD <-> BRL <-> EVA)
+- Show EVA price in real time
+- Expand into essential on-chain metrics in later phases
 
-## 🛠️ Tech Stack
+## 🎯 The Problem
 
-- **Frontend:** Next.js 14 (App Router) + React 18
-- **Styling:** Tailwind CSS
-- **Blockchain:** Ethers.js / Viem
-- **APIs:** Arbitrum RPC, CoinGecko, AwesomeAPI (BRL), Arbiscan
+The user currently needs to:
+
+1. Open Goingecko/Arbiscan manually
+2. Do conversion calculations across currencies
+3. Check multiple sources to understand token metrics
+4. Repeat this process every time they want to analyze/buy/sell the token
 
 ## 🪚 Workflow
 
-See [docs/dev-workflow.md](docs/dev-workflow.md).
+See global file [dev-workflow.md](https://github.com/jemluz/.github/blob/main/.github/dev-workflow/dev-workflow.md).
 
 ## 🤝 Contributing
 

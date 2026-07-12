@@ -1,0 +1,18 @@
+name: sync-prices
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run sync:prices -w @evast/backend-cron
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          COINGECKO_BASE_URL: https://api.coingecko.com/api/v3
