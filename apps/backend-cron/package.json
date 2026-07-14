@@ -3,8 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:smoke": "echo \"Run sync:prices manually and validate price/status tables\"",
     "dev": "echo \"Backend Cron scaffold only\"",
     "build": "echo \"Backend Cron scaffold only\"",
     "sync:prices": "echo \"sync-prices not implemented yet\""
+  },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^12.0.4",
+    "pg": "^8.22.0",
+    "testcontainers": "^12.0.4",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   }
 }
