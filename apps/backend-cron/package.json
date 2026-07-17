@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "vitest",
-    "test:watch": "vitest --watch",
+    "test": "vitest run --reporter=verbose",
+    "test:watch": "vitest --watch --reporter=verbose",
     "test:smoke": "echo \"Run sync:prices manually and validate price/status tables\"",
     "dev": "echo \"Backend Cron scaffold only\"",
     "build": "echo \"Backend Cron scaffold only\"",
