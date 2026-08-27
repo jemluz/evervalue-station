@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16.14-alpine3.24
+    container_name: evast-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: evast_usr
+      POSTGRES_PASSWORD: localpassword
+      POSTGRES_DB: evast_database
+    ports:
+      - "5432:5432"
+    volumes:
+      - evast_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U evast_usr"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  evast_pgdata:
