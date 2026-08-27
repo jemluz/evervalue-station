@@ -1,5 +1,8 @@
 {
   "name": "@evast/shared",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
 }
