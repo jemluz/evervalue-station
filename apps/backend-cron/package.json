@@ -3,18 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsc -p tsconfig.json",
+    "sync:prices": "tsx src/main.ts",
     "test": "vitest run --reporter=verbose",
     "test:watch": "vitest --watch --reporter=verbose",
-    "test:smoke": "echo \"Run sync:prices manually and validate price/status tables\"",
-    "dev": "echo \"Backend Cron scaffold only\"",
-    "build": "echo \"Backend Cron scaffold only\"",
-    "sync:prices": "echo \"sync-prices not implemented yet\""
+    "test:smoke": "echo \"Run sync:prices manually and validate price/status tables\""
   },
   "devDependencies": {
     "@testcontainers/postgresql": "^12.0.4",
+    "@types/node": "^20.19.43",
     "pg": "^8.22.0",
     "testcontainers": "^12.0.4",
+    "tsx": "^4.23.13",
     "typescript": "^5.9.3",
     "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "@evast/shared": "workspace:*"
   }
 }
