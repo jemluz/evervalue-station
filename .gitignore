@@ -19,10 +19,13 @@
 
 # production
 /build
+/packages/shared/dist/
+/packages/shared/node_modules/
 
 # misc
 .DS_Store
 *.pem
+/docs/prompts
 
 # debug
 npm-debug.log*

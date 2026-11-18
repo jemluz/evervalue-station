@@ -2,10 +2,10 @@
   "name": "evervalue-station",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@11.11.0",
+  "engines": {
+    "packageManager": "pnpm"
+  },
   "scripts": {
     "dev": "npm run dev -w @evast/web",
     "build": "npm run build -w @evast/web",
